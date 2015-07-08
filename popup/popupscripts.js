@@ -63,8 +63,16 @@ $(document).ready(function() {
 				$("#nickname").html(data.nickname);
 				$("#eg").html(formatNumber(data.points));
 				$("#uLabel").html("@" + data.username)
-				$("#bio").html(data.bio)
-				$("#location").html(data.userLocation.displayText.replace(/\n/g,"<br>"))
+				try{
+					$("#bio").html(data.bio)
+				}catch(e){
+					$("#bio").html("<i>This user has not set a bio.</i>")
+				}
+				try{
+					$("#location").html(data.userLocation.displayText.replace(/\n/g,"<br>"))
+				}catch(e){
+					$("#location").html("<i>This user has not set a location.</i>")
+				}
 				$("#cHB").html(YN(data.canHellban));
 				$("#hSP").html(YN(data.globalPermissions.length > 0));
 				$("#iM").html(YN(data.isModerator));
@@ -107,6 +115,11 @@ $(document).ready(function() {
 				}
 				if(flags.length == 0){
 					flagFormat = "<b>No Flags!</b>";
+					$("#flagged").hide();
+				}else{
+					if(!data.scratchpad.hideFromHotlist){
+						$("#flagged").show();
+					}
 				}
 				$("#flagscroll").html(flagFormat)
 			});	

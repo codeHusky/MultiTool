@@ -12,20 +12,27 @@
       "195": "image.png",
       "48": "icon-48.png"
    },
+   "background": {
+      "scripts": ["scripts/background.js"]
+   },
    "content_scripts": [ 
       {
          "js": ["scripts/ext/jquery.js", "scripts/content.js"],
-         "matches": [ "*://www.khanacademy.org/*" ],
+         "matches": [ "*://*.khanacademy.org/*" ],
          "run_at": "document_end"
       } 
    ],
    "web_accessible_resources": [
       "scripts/inject/*"
    ],
+   "externally_connectable": {
+      "matches": ["*://*.khanacademy.org/*"]
+   },
    "description": "Useful tools for use on Khan Academy",
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnatGjIMGoR2WlxZzvPm1eBDJxZ0u1uK/sqDFe4Qe4ucctxFrafoY2hotT+gnc5kzzwr25sZfurJVOZ5gMe/aQUrv63i7QWjuzB3Xryl1nF/BGzL/IEHK+BAJTN2MGjeECFKsGonSD7RPpOS4M2HyXUP8eHpy2ZtfP4XsEdTF85Jk1MUPODmUKS8OH3Mq/gawn2oPveBzau9aCNE/OoxnBoqYmIKJ14ZRh3N5UOHcoiQqkUsHzkWDqlt7BRpmqtVeSH6aWTJDoa2BqqkWG11/oFPWjolkoo3YZ1sPpiAuv+8Xoz3MN6UkeLQaqQbd9AqrXzA+z/s80fO6HRHAV378hQIDAQAB",
    "manifest_version": 2,
    "name": "MultiTool for Khan Academy",
-   "permissions": [ "storage", "activeTab" ],
+   "permissions": [ "storage", "activeTab" , "notifications","management"],
    "short_name": "MultiTool",
-   "version": "1.3.4"
+   "version": "1.4"
 }

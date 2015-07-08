@@ -3,8 +3,8 @@ if (Notification.permission !== "granted") {
     Notification.requestPermission();
 }
 
-function newNotifications(notificationCount) {
-  if (Notification.permission !== "granted"){
+function newNotifications(notificationCount,dd) {
+  /*if (Notification.permission !== "granted"){
     Notification.requestPermission();
   }else {
   	var notificationTitle = "New Notification";
@@ -26,7 +26,8 @@ function newNotifications(notificationCount) {
     setTimeout(function() {
     	notification.close();
     },3000);
-  }
+  }*/
+  chrome.runtime.sendMessage("melabjdobbjfobmgaagkmgbnhplncdie",{"newNotificationCount":notificationCount,"isDifference":dd});
 }
 if(KA.userProfileData_.countBrandNewNotifications > 0){
 	newNotifications(KA.userProfileData_.countBrandNewNotifications);
@@ -38,22 +39,28 @@ setInterval(function() {
 		if(data.countBrandNewNotifications != KA.userProfileData_.countBrandNewNotifications){
 			var difference = data.countBrandNewNotifications - KA.userProfileData_.countBrandNewNotifications;
 			if(difference <= 0){
-				//newNotifications("?");
-				$(".notification-bubble").hide().html("0")
-				$(".icon-bell-alt").removeClass("brand-new");
+				//
+        if(difference == 0||data.countBrandNewNotifications == 0){
+          $(".notification-bubble").hide()
+          $(".icon-bell-alt").removeClass("brand-new");
+          newNotifications(difference,true);
+        }else{
+          newNotifications(data.countBrandNewNotifications,false);
+          $(".notification-bubble").show().html(data.countBrandNewNotifications)
+          $(".icon-bell-alt").addClass("brand-new");
+        }
 			}else{
-				newNotifications(difference);
+				newNotifications(difference,true);
 				$(".notification-bubble").show().html(data.countBrandNewNotifications)
 				$(".icon-bell-alt").addClass("brand-new");
 			}
-			if(!setUpdateAlert){
-				$(".user-notifications-toggle").click(function(){
-          if(!userNotified){
-					  alert("In order to receive the new notifications in this box, please reload unless you have not opened your notifications during this page session. I am currently working on a work-around for this.\n-Lokio27");
-				    userNotified = true;
-          }
-        })
-			}
+      if(KA.userProfileData_.countBrandNewNotifications == 0&& data.countBrandNewNotifications != 0){
+        document.title = "(" + data.countBrandNewNotifications + ") " + document.title;
+      }else if(data.countBrandNewNotifications == 0){
+        document.title = document.title.replace("(" + KA.userProfileData_.countBrandNewNotifications + ") ","")
+      }else{
+        document.title = document.title.replace("(" + KA.userProfileData_.countBrandNewNotifications + ") ","(" + data.countBrandNewNotifications + ") ")
+      }
 			KA.userProfileData_.countBrandNewNotifications = data.countBrandNewNotifications;
 			
 		}
