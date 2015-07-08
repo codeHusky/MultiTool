@@ -36,8 +36,8 @@ $(document).ready(function() {
 		}
 	}
 	function formatNumber(number){
-		number = number.toString();
-		if(number.length <= 3){
+		number = parseFloat(number);
+		/*if(number.length <= 3){
 			return number;
 		}
 		var formattedPoints = number;
@@ -48,8 +48,8 @@ $(document).ready(function() {
 				sp[i] = sp[i] + ",";//789
 			}
 			formattedPoints += sp[i].toString();
-		}
-		return formattedPoints;
+		}*/
+		return number.toLocaleString();
 	}
 	$("#lookup").click(function() {
 		killFlash();
