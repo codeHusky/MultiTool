@@ -27,5 +27,5 @@
    "name": "MultiTool for Khan Academy",
    "permissions": [ "storage", "activeTab" ],
    "short_name": "MultiTool",
-   "version": "1.3"
+   "version": "1.3.1"
 }
