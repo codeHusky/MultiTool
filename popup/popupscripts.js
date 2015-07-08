@@ -10,6 +10,9 @@ $(document).ready(function() {
 	$("#autofill #pC").click(function() {
 		var pgA = myTab.url.split("/");
 		var pgID = pgA[pgA.length-1];
+		if(pgID.indexOf("?") > -1){
+			pgID = pgID.substr(0,pgID.indexOf("?"));
+		}
 		if(parseFloat(pgID).toString() == pgID){
 			killFlash();
 			$("#username").val("Please Wait...");
@@ -79,7 +82,7 @@ $(document).ready(function() {
 	})
 	/* Program Diagnositc */
 	$("#lookup-pD").click(function() {
-		var pgID = $("#pgID").val()
+		var pgID = $("#pgID").val().toString();
 		if(parseFloat(pgID).toString() == pgID){
 			$.getJSON("https://www.khanacademy.org/api/internal/show_scratchpad?scratchpad_id=" + pgID + "&casing=camel&lang=en",function(data){
 				/* Creator */
@@ -112,6 +115,9 @@ $(document).ready(function() {
 	$("#autofill #tP").click(function() {
 		var pgA = myTab.url.split("/");
 		var pgID = pgA[pgA.length-1];
+		if(pgID.indexOf("?") > -1){
+			pgID = pgID.substr(0,pgID.indexOf("?"));
+		}
 		if(parseFloat(pgID).toString() == pgID){
 			$("#pgID").val(pgID);
 		}
