@@ -1,3 +1,5 @@
+var version = "1.4.1";
+var changes = [];
 $(document).ready(function() {
 	var myTab;
 	function updateTab() {
@@ -150,4 +152,18 @@ function killFlash(){
 		clearTimeout(thisTimeout);
 	}catch(e){}
 }
+$.getJSON("http://terminalbit.com/MultiTool/versiondata.json",function(data){
+	if(data.latestVersion != version){
+		$("#outOfDateWarning").show();
+	}
+	$("#version").html(data.latestVersion)
+	changes = data.recentChanges;
+	var pushedString = "";
+	for(var i = 0; i < changes.length; i++){
+		pushedString+="<li>" + changes[i] + "</li>";
+	}
+	$("#changes").html(pushedString);
+	$("#changelog").show();
+	$("#changelogLoader").hide();
+})
 

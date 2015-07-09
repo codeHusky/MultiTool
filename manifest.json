@@ -32,8 +32,8 @@
    "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnatGjIMGoR2WlxZzvPm1eBDJxZ0u1uK/sqDFe4Qe4ucctxFrafoY2hotT+gnc5kzzwr25sZfurJVOZ5gMe/aQUrv63i7QWjuzB3Xryl1nF/BGzL/IEHK+BAJTN2MGjeECFKsGonSD7RPpOS4M2HyXUP8eHpy2ZtfP4XsEdTF85Jk1MUPODmUKS8OH3Mq/gawn2oPveBzau9aCNE/OoxnBoqYmIKJ14ZRh3N5UOHcoiQqkUsHzkWDqlt7BRpmqtVeSH6aWTJDoa2BqqkWG11/oFPWjolkoo3YZ1sPpiAuv+8Xoz3MN6UkeLQaqQbd9AqrXzA+z/s80fO6HRHAV378hQIDAQAB",
    "manifest_version": 2,
    "name": "MultiTool for Khan Academy",
-   "permissions": [ "storage", "activeTab" , "notifications","management"],
+   "permissions": [ "storage", "activeTab" , "notifications","management", "http://terminalbit.com/"],
    "short_name": "MultiTool",
-   "version": "1.4.0.1",
-   "version_name":"1.4_01"
+   "version": "1.4.1",
+   "version_name":"1.4.1"
 }
