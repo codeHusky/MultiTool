@@ -1,5 +1,6 @@
-var version = "1.4.1";
+var version = "1.4.3.1";
 var changes = [];
+var notificationsShown = false;
 $(document).ready(function() {
 	var myTab;
 	function updateTab() {
@@ -56,22 +57,27 @@ $(document).ready(function() {
 		}*/
 		return number.toLocaleString();
 	}
+	function parseString(string){
+		string = string.replace(/</g,"&lt;");
+		string = string.replace(/>/g,"&gt;");
+		return string;
+	}
 	$("#lookup").click(function() {
 		killFlash();
 		var UN = $("#username").val();
 		if(UN.length > 0){
 			$.getJSON("https://www.khanacademy.org/api/internal/user/profile?username=" + UN,function(data){
 				$("#ppic").attr("src",data.avatarSrc);
-				$("#nickname").html(data.nickname);
+				$("#nickname").html(parseString(data.nickname));
 				$("#eg").html(formatNumber(data.points));
 				$("#uLabel").html("@" + data.username)
 				try{
-					$("#bio").html(data.bio)
+					$("#bio").html(parseString(data.bio))
 				}catch(e){
 					$("#bio").html("")
 				}
 				try{
-					$("#location").html(data.userLocation.displayText.replace(/\n/g,"<br>"))
+					$("#location").html(parseString(data.userLocation.displayText).replace(/\n/g,"<br>"))
 				}catch(e){
 					$("#location").html("")
 				}
@@ -138,6 +144,12 @@ $(document).ready(function() {
 		}
 	});
 	/* Options */
+	chrome.storage.sync.get({"showNotifications":true}, function(data){
+		$("#autoNotif").prop("checked", data.showNotifications);
+	})
+	$("#autoNotif").change(function() {
+		chrome.storage.sync.set({"showNotifications":$(this).prop("checked")});
+	})
 });
 var thisTimeout;
 function flashU(text){

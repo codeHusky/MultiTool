@@ -2,12 +2,27 @@ var lastNotificationCount;
 var counter = 0;
 var registeredTab = "";
 var queue = [];
+var go = false;
+function detectCanShow(callback) {
+	chrome.storage.sync.get("showNotifications",function(data) {
+		if(typeof data.showNotifications == "boolean"){
+			console.log("sending: " + data.showNotifications);
+			go = data.showNotifications;
+			callback({"canShowNotifications":data.showNotifications});
+		}else{
+			chrome.storage.sync.set({"showNotifications":true});
+			go = true;
+			callback({"canShowNotifications":true});
+		}
+	})
+	return go
+}
+detectCanShow(function(data){})
 chrome.runtime.onMessageExternal.addListener(
 	function(request, sender, sendResponse){
 		if(sender.url.indexOf("https://www.khanacademy.org/") <= -1){
 			return;
-		}
-		if(request.registering){
+		}else if(request.registering){
 			if(registeredTab == ""){
 				registeredTab = request.registering;
 			}else{
@@ -46,10 +61,19 @@ chrome.runtime.onMessageExternal.addListener(
 					iconUrl:"https://www.khanacademy.org/images/avatars/leaf-green.png"
 				};
 				counter++;
-				chrome.notifications.create("NewNotificationMultiTool" + counter.toString(), notificationOptions, function(nID) {
-					setTimeout(function(){
-						chrome.notifications.clear(nID);
-					},3000);
+				function createNotification(data) {
+					if(data.showNotifications){
+						chrome.notifications.create("NewNotificationMultiTool" + counter.toString(), notificationOptions, function(nID) {
+							setTimeout(function(){
+								chrome.notifications.clear(nID);
+							},3000);
+						})
+					}else{
+						console.log("ERROR?")
+					}
+				}
+				chrome.storage.sync.get({"showNotifications":true}, function(data){
+					createNotification(data);
 				})
 			}
 		}
