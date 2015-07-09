@@ -2,7 +2,11 @@
 if (Notification.permission !== "granted") {
     Notification.requestPermission();
 }
-
+var tabid = Math.round(Math.random()*875835873*Math.random());
+console.log(tabid);
+chrome.runtime.sendMessage("melabjdobbjfobmgaagkmgbnhplncdie",{"registering":tabid},function(data){
+  console.log(data);
+});
 function newNotifications(notificationCount,dd) {
   /*if (Notification.permission !== "granted"){
     Notification.requestPermission();
@@ -27,7 +31,7 @@ function newNotifications(notificationCount,dd) {
     	notification.close();
     },3000);
   }*/
-  chrome.runtime.sendMessage("melabjdobbjfobmgaagkmgbnhplncdie",{"newNotificationCount":notificationCount,"isDifference":dd});
+  chrome.runtime.sendMessage("melabjdobbjfobmgaagkmgbnhplncdie",{"newNotificationCount":notificationCount,"isDifference":dd,"tabid":tabid});
 }
 if(KA.userProfileData_.countBrandNewNotifications > 0){
 	newNotifications(KA.userProfileData_.countBrandNewNotifications);
@@ -66,3 +70,6 @@ setInterval(function() {
 		}
 	})
 },2000);
+window.onbeforeunload = function() {
+  chrome.runtime.sendMessage("melabjdobbjfobmgaagkmgbnhplncdie",{"unregistering":tabid})
+};

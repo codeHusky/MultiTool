@@ -66,12 +66,12 @@ $(document).ready(function() {
 				try{
 					$("#bio").html(data.bio)
 				}catch(e){
-					$("#bio").html("<i>This user has not set a bio.</i>")
+					$("#bio").html("")
 				}
 				try{
 					$("#location").html(data.userLocation.displayText.replace(/\n/g,"<br>"))
 				}catch(e){
-					$("#location").html("<i>This user has not set a location.</i>")
+					$("#location").html("")
 				}
 				$("#cHB").html(YN(data.canHellban));
 				$("#hSP").html(YN(data.globalPermissions.length > 0));

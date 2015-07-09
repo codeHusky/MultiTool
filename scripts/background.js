@@ -1,8 +1,30 @@
 var lastNotificationCount;
 var counter = 0;
+var registeredTab = "";
+var queue = [];
 chrome.runtime.onMessageExternal.addListener(
 	function(request, sender, sendResponse){
 		if(sender.url.indexOf("https://www.khanacademy.org/") <= -1){
+			return;
+		}
+		if(request.registering){
+			if(registeredTab == ""){
+				registeredTab = request.registering;
+			}else{
+				queue.push(request.registering);
+			}
+			return;
+		}else if(request.unregistering){
+			queue.splice(queue.indexOf(request.unregistering),1);
+			if(queue.length == 0){
+				registeredTab = "";
+			}else{
+				registeredTab = queue[0];
+			}
+			return;
+		}
+		if(request.tabid != registeredTab){
+			console.log("DENIED.")
 			return;
 		}
 		if(request.newNotificationCount&&request.newNotificationCount != lastNotificationCount||request.isDifference == true){
@@ -30,8 +52,6 @@ chrome.runtime.onMessageExternal.addListener(
 					},3000);
 				})
 			}
-		}else{
-			console.log()
 		}
 	}
 );
