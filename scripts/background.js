@@ -37,6 +37,16 @@ chrome.runtime.onMessageExternal.addListener(
 				registeredTab = queue[0];
 			}
 			return;
+		}else if(request.check){
+			if(request.check == "canPost"){
+				sendResponse({"canPost":true});
+				return;
+			}
+		}else if(request.get){
+			if(request.get == "manifest"){
+				sendResponse(chrome.runtime.getManifest());
+				return;
+			}
 		}
 		if(request.tabid != registeredTab){
 			console.log("DENIED.")

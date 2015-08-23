@@ -1,4 +1,4 @@
-var version = "1.4.3.1";
+var version = chrome.runtime.getManifest().version_name;
 var changes = [];
 var notificationsShown = false;
 $(document).ready(function() {
@@ -90,6 +90,7 @@ $(document).ready(function() {
 				$("#iCur").html(YN(data.isCurator));
 				$("#iB").html(YN(data.isPublisher));
 				$("#cOC").html(YN(data.canCreateOfficialClarifications));
+				$("#sc").html(data.streakLastLength);
 			});
 		}
 	});
@@ -130,6 +131,8 @@ $(document).ready(function() {
 					}
 				}
 				$("#flagscroll").html(flagFormat)
+				$(".ctm").attr("title",data.scratchpad.created).timeago();
+				$(".utm").attr("title",data.scratchpad.date).timeago();
 			});	
 		}
 	});
