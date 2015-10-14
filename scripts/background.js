@@ -4,113 +4,149 @@ var registeredTab = "";
 var queue = [];
 var go = false;
 var canPost = false;
-function detectCanShow(callback) {
-	chrome.storage.sync.get("showNotifications",function(data) {
-		if(typeof data.showNotifications == "boolean"){
+
+var detectCanShow = function(callback) {
+    chrome.storage.sync.get("showNotifications", function(data) {
+		if (typeof data.showNotifications === "boolean") {
 			go = data.showNotifications;
-		}else{
-			chrome.storage.sync.set({"showNotifications":true});
+		} else {
+			chrome.storage.sync.set({
+                "showNotifications": true
+            });
+
 			go = true;
 		}
-	})
-	return go
-}
-function detectCanPost(callback){
-	chrome.storage.sync.get("canPost",function(data){
-		if(typeof data.canPost == "boolean"){
+	});
+
+	return go;
+};
+
+var detectCanPost = function(callback) {
+    chrome.storage.sync.get("canPost", function(data){
+		if (typeof data.canPost === "boolean") {
 			canPost = data.canPost;
-		}else{
-			chrome.storage.sync.set({"canPost":"check"})
+		} else {
+			chrome.storage.sync.set({
+                "canPost": "check"
+            });
+
 			canPost = "check";
 		}
-	})
+	});
+
 	return canPost;
-}
-function setCanPost(data){
-	chrome.storage.sync.set({"canPost":data})
-}
+};
+
+var setCanPost = function(data) {
+    chrome.storage.sync.set({
+        "canPost": data
+    });
+};
+
 setInterval(function() {
 	detectCanShow();
 	detectCanPost();
 },1000);
-chrome.runtime.onMessageExternal.addListener(
-	function(request, sender, sendResponse){
-		if(sender.url.indexOf("https://www.khanacademy.org/") <= -1){
+
+chrome.runtime.onMessageExternal.addListener(function(request, sender, sendResponse) {
+		if (sender.url.indexOf("https://www.khanacademy.org/") <= -1) {
 			return;
-		}else if(request.registering){
-			if(registeredTab == ""){
+		} else if (request.registering) {
+			if (registeredTab === "") {
 				registeredTab = request.registering;
-			}else{
+			} else {
 				queue.push(request.registering);
 			}
 			return;
-		}else if(request.unregistering){
-			queue.splice(queue.indexOf(request.unregistering),1);
-			if(queue.length == 0){
+		} else if (request.unregistering) {
+			queue.splice(queue.indexOf(request.unregistering), 1);
+
+			if (queue.length === 0) {
 				registeredTab = "";
-			}else{
+			} else {
 				registeredTab = queue[0];
 			}
+
 			return;
-		}else if(request.check){
-			if(request.check == "canPost"){
-				sendResponse({"canPost":canPost});
+		} else if (request.check) {
+			if (request.check === "canPost") {
+				sendResponse({
+                    "canPost": canPost
+                });
+
 				return;
 			}
-		}else if(request.get){
-			if(request.get == "manifest"){
+		} else if (request.get) {
+			if (request.get === "manifest") {
 				sendResponse(chrome.runtime.getManifest());
+
 				return;
 			}
-		}else if(request.set){
-			if(request.set == "canPost"){
-				chrome.storage.sync.set({"canPost":request.data})
-				sendResponse({"completed":true})
+		} else if (request.set) {
+			if (request.set === "canPost") {
+				chrome.storage.sync.set({
+                    "canPost": request.data
+                });
+
+				sendResponse({
+                    "completed":true
+                });
+
 				return;
 			}
 		}
-		if(request.tabid != registeredTab){
-			console.log("DENIED.")
+		if (request.tabid !== registeredTab) {
+			console.log("DENIED.");
+
 			return;
 		}
-		if(request.newNotificationCount&&request.newNotificationCount != lastNotificationCount||request.isDifference == true){
-			console.log(request.newNotificationCount)
+		if (request.newNotificationCount && request.newNotificationCount != lastNotificationCount || request.isDifference === true) {
+			console.log(request.newNotificationCount);
+
 			lastNotificationCount = request.newNotificationCount;
+
 			var TITLE = "New Notification";
 			var MESSAGE = "You have ";
-			if(request.newNotificationCount > 0){
-				if(request.newNotificationCount > 1){
-					TITLE+="s";
-					MESSAGE+= request.newNotificationCount + " new notifications!";
-				}else{
+
+			if (request.newNotificationCount > 0) {
+				if (request.newNotificationCount > 1) {
+					TITLE += "s";
+					MESSAGE += request.newNotificationCount + " new notifications!";
+				} else {
 					MESSAGE+= "a new notification!";
 				}
+
 				var notificationOptions = {
-					type:"basic",
-					title:TITLE,
-					message:MESSAGE,
-					iconUrl:"https://www.khanacademy.org/images/avatars/leaf-green.png"
+					type: "basic",
+					title: TITLE,
+					message: MESSAGE,
+					iconUrl: "https://www.khanacademy.org/images/avatars/leaf-green.png"
 				};
+
 				counter++;
-				function createNotification(data) {
-					if(data.showNotifications){
+
+                var createNotification = function(data) {
+                    if (data.showNotifications) {
 						chrome.notifications.create("NewNotificationMultiTool" + counter.toString(), notificationOptions, function(nID) {
-							setTimeout(function(){
+							setTimeout(function() {
 								chrome.notifications.clear(nID);
-							},3000);
-						})
-					}else{
-						console.log("ERROR?")
+							}, 3000);
+						});
+					} else {
+						console.log("ERROR?");
 					}
-				}
-				chrome.storage.sync.get({"showNotifications":true}, function(data){
+                };
+				chrome.storage.sync.get({
+                    "showNotifications":true
+                }, function(data){
 					createNotification(data);
-				})
+				});
 			}
 		}
 	}
 );
-console.log("WUT")
+console.log("WUT");
+
 //UA-64943605-2
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-64943605-3']);
