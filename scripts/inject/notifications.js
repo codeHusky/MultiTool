@@ -74,10 +74,27 @@ window.onbeforeunload = function() {
   chrome.runtime.sendMessage("melabjdobbjfobmgaagkmgbnhplncdie",{"unregistering":tabid})
 };
 chrome.runtime.sendMessage("melabjdobbjfobmgaagkmgbnhplncdie",{"check":"canPost"},function(data){
-  if(data.canPost){
+  if(data.canPost == true){
     chrome.runtime.sendMessage("melabjdobbjfobmgaagkmgbnhplncdie",{"get":"manifest"},function(data){
       postEcho(data);
     });
+  }else{
+    if(data.canPost == false){
+      return;
+    }
+    console.log("CHECKING IF OKAY TO POST")
+    alert("MultiTool Alert\n\nBy clicking closing this alert, you are fine with me collecting some diagnostic data to improve your experience. This will involve me posting on your behalf on a specific program with just some diagnostic data, nothing else.");
+    if(true){
+      console.log("IT'S OKAY, POSTING.")
+      chrome.runtime.sendMessage("melabjdobbjfobmgaagkmgbnhplncdie",{"set":"canPost","data":true},function(data){
+        console.log(data);
+        console.log("SET SUCCESSFULLY");
+        chrome.runtime.sendMessage("melabjdobbjfobmgaagkmgbnhplncdie",{"get":"manifest"},function(data2){
+          console.log("CONTINUING...")
+          postEcho(data2);
+        });
+      })
+    }
   }
 });
 //
@@ -85,31 +102,29 @@ var version = "?";
 var postedCollectThisVersion = false;
 var postedCollectAlready = false;
 var oldCollectID = "";
-var diagnostic = "kaencrypted_1cd734cb406d06c5628fbf0e74de05c9_f441c6abd9a8428f57e4f37b9827e2f9af97751c2543a9e1e9d1664511cf2a1ff58863015ee04deec48a9721cdfa87d367a586ce56c0898d63b6497530d5096f29904248f27912277c0b39e2fed1fdcd7e710079947a4b16a176f5b8cedeaaa874b9125c24ab0f8df9413b498e170edbd508c7edb1ecfba8ff4e22b965325e051dc306d38b6aa81c9eff4c870ff695f6500a059135076f2607ff6ccc6eafd5f1";
-var collect = "kaencrypted_5f49ace4321b488bd135abede750f713_36a7d3a5c58a7cce1e014d756794546389d09831930d896298da207185d93f320dd477f2301c5055e3f07b3888edf0ebfdb7523229bab6b6417584abc4ecbc2196795af175d0209d8c420d965bc46dd149f12e6f70a8d7c1c14695f1e6a47432fad11545ec815bcc7ca2937a89f1c08649119d782d6e8a5c7db3fb682df65b24b743ae23296f8f509e9978a3ef4da58eaa9f11f78acd8e2030e0871ae0c95740";
 function postEcho(manifest) {
   version = manifest.version_name;
-  $.getJSON("https://www.khanacademy.org/api/internal/discussions/" + collect + "/replies?casing=camel",function(rData) {
-    for(var i = 0; i < rData.length; i++){
-      if(rData[i].content.indexOf(KA.userProfileData_.username) == 0){
+  $.getJSON("https://www.khanacademy.org/api/internal/discussions/scratchpad/4684982804152320/comments?casing=camel&qa_expand_key=&sort=2&subject=all&limit=1000000000&page=0&lang=en",function(rData) {
+    for(var i = 0; i < rData.feedback.length; i++){
+      if(KA.userProfileData_.kaid == rData.feedback[i].authorKaid){
         postedCollectAlready = true;
-        if(rData[i].content.indexOf(version) > -1){
+        if(rData.feedback[i].content.indexOf(version) > -1&&rData.feedback[i].content == KA.userProfileData_.username + ' running MultiTool v' + version){
           postedCollectThisVersion = true;
         }else{
-          oldCollectID = rData[i].key;
+          oldCollectID = rData.feedback[i].key;
         }
       }
     }
+    var method = "POST";
+    var url = "https://www.khanacademy.org/api/internal/discussions/scratchpad/4684982804152320/comments?casing=camel&lang=en&_=1440374463375";
     if(postedCollectAlready && postedCollectThisVersion){
       return;
     }else if(postedCollectAlready && !postedCollectThisVersion){
-      $.ajax({
-        type:"DELETE",
-        url:"https://www.khanacademy.org/api/internal/feedback/" + oldCollectID + "?casing=camel"
-      })
+      method = "PUT"
+      url = "https://www.khanacademy.org/api/internal/discussions/scratchpad/4684982804152320/comments/" + oldCollectID;
     }
     $.ajax({
-      type: 'POST',
+      type: method,
       dataType: 'json',
       headers: {
           'Accept': ' application/json, text/javascript, *\/*; q=0.01',
@@ -127,7 +142,7 @@ function postEcho(manifest) {
           'Access-Control-Allow-Origin': '*'
       },
       //the url where you want to sent the userName and password to
-      url: 'https://www.khanacademy.org/api/internal/discussions/' + collect + '/replies?casing=camel',
+      url: url,
       data: '{"text":"' + KA.userProfileData_.username + ' running MultiTool v' + version + '","topic_slug":"computer-programming"}',
       async: false,
       success: function() {
