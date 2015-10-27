@@ -1,6 +1,14 @@
 var version = chrome.runtime.getManifest().version_name;
 var changes = [];
 var notificationsShown = false;
+var flagTypesFriendly = {
+    "doesnotbelong": "Off-topic",
+    "vote-soliciting": "Soliciting votes",
+    "using-disallowed": "Using disallowed functionality",
+    "inappropriate": "Abuse",
+    "plagiarism": "Plagiarism"
+};
+
 $(document).ready(function() {
     var myTab;
 
@@ -38,14 +46,6 @@ $(document).ready(function() {
             flashU("Not a profile!");
         }
     });
-
-    function YN(bool) {
-        if (bool) {
-            return "Yes";
-        } else {
-            return "No";
-        }
-    }
 
     function formatNumber(number) {
         number = parseFloat(number);
@@ -88,6 +88,9 @@ $(document).ready(function() {
                 } catch (e) {
                     $("#location").html("");
                 }
+                /* FIXME: Most of these properties are only available if a request is made from
+                   khanacademy.org and even then only if the request is made about the currently
+                   logged in user */
                 $("#cHB").html(YN(data.canHellban));
                 $("#hSP").html(YN(data.globalPermissions.length > 0));
                 $("#iM").html(YN(data.isModerator));
@@ -97,7 +100,13 @@ $(document).ready(function() {
                 $("#iCur").html(YN(data.isCurator));
                 $("#iB").html(YN(data.isPublisher));
                 $("#cOC").html(YN(data.canCreateOfficialClarifications));
-                $("#sc").html(data.streakLastLength);
+                var $streakCounter = $("#sc").html(data.streakLastLength);
+                var todayString = (new Date()).toISOString().split("T")[0];
+                if (data.streakLastExtended === todayString) {
+                    $streakCounter.removeClass("streak-inactive").addClass("streak-active");
+                } else {
+                    $streakCounter.removeClass("streak-active").addClass("streak-inactive");
+                }
             });
         }
     });
@@ -127,17 +136,23 @@ $(document).ready(function() {
                 var flags = data.scratchpad.flags;
                 var flagFormat = "";
                 for (var i = 0; i < flags.length; i++) {
-                    flagFormat += "<b>" + flags[i].replace(":", "</b>:") + "<br>";
+                    var flag = flags[i].split(":");
+                    var flagType = flagTypesFriendly[flag[0].trim()];
+                    var flagReason = flag[1].trim();
+                    if (!flagReason.length) {
+                        flagReason = "<i>No reason given</i>";
+                    }
+                    flagFormat += "<tr><td>" + flagType + "</td><td>" + flagReason + "</td></tr>";
                 }
                 if (flags.length === 0) {
-                    flagFormat = "<b>No Flags!</b>";
+                    flagFormat = "<tr><td>No Flags!</td><td><i>No one has flagged this program yet!</i></td></tr>";
                     $("#flagged").hide();
                 } else {
                     if (!data.scratchpad.hideFromHotlist) {
                         $("#flagged").show();
                     }
                 }
-                $("#flagscroll").html(flagFormat);
+                $("#flags").html(flagFormat);
                 $(".ctm").attr("title", data.scratchpad.created).timeago();
                 $(".utm").attr("title", data.scratchpad.date).timeago();
             });
@@ -180,6 +195,19 @@ function killFlash() {
         clearTimeout(thisTimeout);
     } catch (e) {}
 }
+
+function YN(bool) {
+    /* Type coercion is on intended */
+    if (bool == null) {
+        return "Unknown";
+    }
+    if (bool) {
+        return "Yes";
+    } else {
+        return "No";
+    }
+}
+
 $.getJSON("http://terminalbit.com/MultiTool/versiondata.json", function(data) {
     if (data.latestVersion != version) {
         $("#outOfDateWarning").show();

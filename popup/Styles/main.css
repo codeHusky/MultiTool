@@ -1,0 +1,45 @@
+html,
+body {
+    width: 500px;
+    height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0px;
+    margin: 0px;
+}
+
+.jumbotron {
+    margin-top: 51px;
+}
+
+#version {
+    color: red;
+}
+
+hr {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.mt-table td + td, .mt-table th + th {
+    border-left: 1px solid #CCC;
+}
+
+.mt-badge {
+    border-radius: 3px;
+}
+
+.energy-points {
+    color: #FFF;
+    background-color: #00b0de;
+}
+
+.streak-active {
+    background-color: rgb(229, 121, 9);
+    color: rgb(238, 238, 238);
+}
+
+.streak-inactive {
+    background-color: rgb(238, 238, 238);
+    color: rgb(229, 121, 9);
+}

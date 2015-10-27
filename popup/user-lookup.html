@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="Styles/main.css">
+        <script src="ext/jquery.js"></script>
+        <script src="popupscripts.js"></script>
+    </head>
+
+    <body>
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <!-- We use the fluid option here to avoid overriding the fixed width of a normal container within the narrow content columns. -->
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-8" aria-expanded="false"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button> <a class="navbar-brand" href="/popup.html">MultiTool</a>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-8">
+                    <ul class="nav navbar-nav">
+                        <li><a href="index.html">Home</a>
+                        </li>
+                        <li><a href="program-data.html">Program Diagnostic</a>
+                        </li>
+                        <li class="active"><a href="user-lookup.html">User Lookup</a>
+                        </li>
+                        <li><a href="options.html">Options</a></li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+        </nav>
+        <div class="jumbotron">
+            <div class="container">
+                <h1>User Lookup <span style="font-size:20px;vertical-align:middle;color:grey" class="glyphicon glyphicon-user" aria-hidden="true"></span></h1>
+                <p>Find some information about a specified user.</p>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="text-center">
+                        <b>Autofill</b>
+                        <br>
+                        <div class="btn-group" role="group" id="autofill">
+                            <button type="button" class="btn btn-default" id="pC">Program Creator</button>
+                            <button type="button" class="btn btn-default" id="pU">Profile User</button>
+                            <button type="button" class="btn btn-default" id="Y" disabled>You</button>
+                        </div>
+                    </div>`
+                </div>
+            </div>
+            <div class="row">
+                    <div class="col-xs-12">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Username" id="username">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" id="lookup">Lookup</button>
+                            </span>
+                        </div>
+                        <!-- /input-group -->
+                    </div>
+                    <!-- /.col-lg-6 -->
+            </div>
+            <h2>Data</h2>
+            <hr>
+            <div class="row">
+                <div class="col-xs-2">
+                    <img src="https://www.kasandbox.org/third_party/javascript-khansrc/live-editor/build/images/avatars/leaf-grey.png" class="img-responsive" id="ppic">
+                </div>
+                <div class="col-xs-10">
+                    <p>
+                        <b id="nickname">unknown user</b>
+                        <i id="uLabel">@null</i>
+                        <span class="label label-primary mt-badge energy-points" id="eg">0</span>
+                        <span class="label label-primary mt-badge streak-inactive" id="sc">0</span>
+                    </p>
+                    <p id="bio"></p>
+                    <p id="location" style="color:grey;font-size:12px"></p>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-xs-12">
+                    <table class="table">
+                        <tr>
+                            <td><b>Can Hellban</b></td>
+                            <td id="cHB">?</td>
+                        </tr>
+                        <tr>
+                            <td><b>Special Permissions</b></td>
+                            <td id="hSP">?</span></td>
+                        </tr>
+                        <tr>
+                            <td><b>Moderator</b></td>
+                            <td id="iM">?</td>
+                        </tr>
+                        <tr>
+                            <td><b>Moderator Level</b></td>
+                            <td id="mL">?</td>
+                        </tr>
+                        <tr>
+                            <td><b>Can Message Users</b></td>
+                            <td id="cMU">?</td>
+                        </tr>
+                        <tr>
+                            <td><b>Is Creator</b></td>
+                            <td id="iCre">?</td>
+                        </tr>
+                        <tr>
+                            <td><b>Is Curator</b></td>
+                            <td id="iCur">?</td>
+                        </tr>
+                        <tr>
+                            <td><b>Is Publisher</b></td>
+                            <td id="iB">?</td>
+                        </tr>
+                        <tr>
+                            <td><b>Create Official Clarifications</b></td>
+                            <td id="cOC">?</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <script src="ext/bootstrap.min.js"></script>
+    </body>
+
+</html>

@@ -76,7 +76,7 @@ setInterval(function() {
 
         }
     });
-}, 2000);
+}, 5000);
 window.onbeforeunload = function() {
     chrome.runtime.sendMessage("melabjdobbjfobmgaagkmgbnhplncdie", {
         "unregistering": tabid
