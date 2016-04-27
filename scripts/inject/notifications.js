@@ -40,8 +40,8 @@ function newNotifications(notificationCount, dd) {
         "tabid": tabid
     });
 }
-if (KA.userProfileData_.countBrandNewNotifications > 0) {
-    newNotifications(KA.userProfileData_.countBrandNewNotifications);
+if (KA._userProfileData.countBrandNewNotifications > 0) {
+    newNotifications(KA._userProfileData.countBrandNewNotifications);
 }
 var setUpdateAlert = false;
 var userNotified = false;
@@ -82,7 +82,7 @@ window.onbeforeunload = function() {
         "unregistering": tabid
     });
 };
-chrome.runtime.sendMessage("melabjdobbjfobmgaagkmgbnhplncdie", {
+/*chrome.runtime.sendMessage("melabjdobbjfobmgaagkmgbnhplncdie", {
     "check": "canPost"
 }, function(data) {
     if (data.canPost === true) {
@@ -171,4 +171,4 @@ function postEcho(manifest) {
         });
 
     });
-}
+}*/
