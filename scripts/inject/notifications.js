@@ -46,9 +46,9 @@ if (KA._userProfileData.countBrandNewNotifications > 0) {
 var setUpdateAlert = false;
 var userNotified = false;
 setInterval(function() {
-    $.getJSON("https://www.khanacademy.org/api/internal/user/profile?username=" + KA.userProfileData_.username, function(data) {
-        if (data.countBrandNewNotifications != KA.userProfileData_.countBrandNewNotifications) {
-            var difference = data.countBrandNewNotifications - KA.userProfileData_.countBrandNewNotifications;
+    $.getJSON("https://www.khanacademy.org/api/internal/user/profile?username=" + KA._userProfileData.username, function(data) {
+        if (data.countBrandNewNotifications != KA._userProfileData.countBrandNewNotifications) {
+            var difference = data.countBrandNewNotifications - KA._userProfileData.countBrandNewNotifications;
             if (difference <= 0) {
                 //
                 if (difference === 0 || data.countBrandNewNotifications === 0) {
@@ -65,14 +65,14 @@ setInterval(function() {
                 $(".notification-bubble").show().html(data.countBrandNewNotifications);
                 $(".icon-bell-alt").addClass("brand-new");
             }
-            if (KA.userProfileData_.countBrandNewNotifications === 0 && data.countBrandNewNotifications !== 0) {
+            if (KA._userProfileData.countBrandNewNotifications === 0 && data.countBrandNewNotifications !== 0) {
                 document.title = "(" + data.countBrandNewNotifications + ") " + document.title;
             } else if (data.countBrandNewNotifications === 0) {
-                document.title = document.title.replace("(" + KA.userProfileData_.countBrandNewNotifications + ") ", "");
+                document.title = document.title.replace("(" + KA._userProfileData.countBrandNewNotifications + ") ", "");
             } else {
-                document.title = document.title.replace("(" + KA.userProfileData_.countBrandNewNotifications + ") ", "(" + data.countBrandNewNotifications + ") ");
+                document.title = document.title.replace("(" + KA._userProfileData.countBrandNewNotifications + ") ", "(" + data.countBrandNewNotifications + ") ");
             }
-            KA.userProfileData_.countBrandNewNotifications = data.countBrandNewNotifications;
+            KA._userProfileData.countBrandNewNotifications = data.countBrandNewNotifications;
 
         }
     });

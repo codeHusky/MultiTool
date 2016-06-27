@@ -7,6 +7,11 @@
         <link rel="stylesheet" type="text/css" href="Styles/main.css">
         <script src="ext/jquery.js"></script>
         <script src="popupscripts.js"></script>
+        <style>
+            .btn {
+                width:100%;
+            }
+        </style>
     </head>
 
     <body>
@@ -37,18 +42,29 @@
         </nav>
         <div class="jumbotron">
             <div class="container">
-                <h1>Options</h1>
-                <p>Turn on or off a few features of this extension.</p>
+                <h1>Tools</h1>
+                <p>Putting the <i>Tool</i> in MultiTool since 2016</p>
             </div>
         </div>
         <div class="container">
             <hr style="margin-top:0px">
             <center>
-                <i>Notifications should <b>actually work now</b>. Sorry!</i>
+                <i>These are beta-ish features. Don't panic if they dont't work, half the stuff in this extension breaks when KA updates anyway. >-></i>
             </center>
             <hr style="margin-top:20px">
-            <label>
-                <input type="checkbox" id="autoNotif"> Notification Alerts</label>
+            <button type="button" class="btn btn-default" id="forceFull">Slay the live editor (Immersive-ish mode)</button>
+            <div style="height:5px"></div>
+            <div class="btn-group btn-group-justified" role="group" style="width:100%">
+                <div class="btn-group">
+                    <a type="button" class="btn btn-default" href="https://khanacademy.org/computer-programming/new/pjs" target="_blank">New PJS</a>
+                </div>
+                <div class="btn-group">
+                    <a type="button" class="btn btn-default" href="https://khanacademy.org/computer-programming/new/webpage" target="_blank">New Webpage</a>
+                </div>
+                <div class="btn-group">
+                    <a type="button" class="btn btn-default" href="https://khanacademy.org/computer-programming/new/sql" target="_blank">New SQL Script</a>
+                </div>
+            </div>
         </div>
         <script src="ext/bootstrap.min.js"></script>
     </body>

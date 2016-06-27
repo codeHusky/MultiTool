@@ -179,6 +179,17 @@ $(document).ready(function() {
             "showNotifications": $(this).prop("checked")
         });
     });
+    /* Tools */
+    $("#forceFull").click(function() {
+        var tt = confirm("This will remove the page's scratchpad editor! Are you sure?");
+        if(tt){
+            updateTab();
+            console.log(myTab)
+            chrome.tabs.executeScript({
+                file: "scripts/pushFullScreen.js"
+            })
+        }
+    })
 });
 var thisTimeout;
 
