@@ -138,7 +138,8 @@ $(document).ready(function() {
                 for (var i = 0; i < flags.length; i++) {
                     var flag = flags[i].split(":");
                     var flagType = flagTypesFriendly[flag[0].trim()];
-                    var flagReason = flag[1].trim();
+                    var flagReason = flags[i].replace(flag[0].trim() + ": ","");
+                    console.log(flagReason + " || " + flag[1])
                     if (!flagReason.length) {
                         flagReason = "<i>No reason given</i>";
                     }
