@@ -91,7 +91,8 @@ $(document).ready(function() {
                 /* FIXME: Most of these properties are only available if a request is made from
                    khanacademy.org and even then only if the request is made about the currently
                    logged in user */
-                $("#cHB").html(YN(data.canHellban));
+                $("#dateJoined").html((data.dateJoined)?data.dateJoined:"Unknown");
+                /*$("#cHB").html(YN(data.canHellban));
                 $("#hSP").html(YN(data.globalPermissions.length > 0));
                 $("#iM").html(YN(data.isModerator));
                 $("#mL").html(data.moderatorLevel);
@@ -99,7 +100,7 @@ $(document).ready(function() {
                 $("#iCre").html(YN(data.isCreator));
                 $("#iCur").html(YN(data.isCurator));
                 $("#iB").html(YN(data.isPublisher));
-                $("#cOC").html(YN(data.canCreateOfficialClarifications));
+                $("#cOC").html(YN(data.canCreateOfficialClarifications));*/
                 var $streakCounter = $("#sc").html(data.streakLastLength);
                 var todayString = (new Date()).toISOString().split("T")[0];
                 if (data.streakLastExtended === todayString) {
